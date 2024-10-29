@@ -3,7 +3,7 @@ import Link from 'next/link';
 import * as React from "react";
 import { Button } from "../ui/button";
 import { UserProfile } from "../user-profile";
-import { Code, Menu, X, ChevronDown } from "lucide-react";
+import { HeartHandshake, Menu, X, ChevronDown } from "lucide-react";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import config from "@/config";
 import { cn } from "@/lib/utils";
@@ -74,7 +74,7 @@ export default function NavBar() {
             <div className="px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
                 <div className="flex items-center">
                     <Link href="/" className="flex items-center space-x-2">
-                        <Code className="h-6 w-6 text-[#5D51FF]" />
+                        <HeartHandshake className="h-6 w-6 text-[#5D51FF]" />
                         <span className="inline-block font-bold text-[#F9F9FF]">Sally</span>
                     </Link>
                 </div>

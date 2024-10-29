@@ -1,7 +1,7 @@
 "use client"
 
 import ModeToggle from '@/components/mode-toggle'
-import { Code, Menu } from 'lucide-react'
+import { HeartHandshake, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
@@ -20,7 +20,7 @@ export default function DashboardTopNav({ toggleSidebar }: { toggleSidebar: () =
         <Menu className="h-6 w-6" />
       </button>
       <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
-        <Code className="h-6 w-6 text-[#5D51FF]" />
+        <HeartHandshake className="h-6 w-6 text-[#5D51FF]" />
         <span className="hidden md:inline">Sally</span>
       </Link>
       <p className="text-xs text-[#A6A6A6]">

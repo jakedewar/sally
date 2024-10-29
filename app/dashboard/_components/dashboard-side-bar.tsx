@@ -3,12 +3,10 @@
 import { Separator } from '@/components/ui/separator'
 import { UserProfile } from '@/components/user-profile'
 import clsx from 'clsx'
-import { Code, HomeIcon, Settings, CalendarCog, ListCheck, BriefcaseBusiness } from "lucide-react"
+import { HomeIcon, Settings, CalendarCog, ListCheck, BriefcaseBusiness, LayoutTemplate } from "lucide-react"
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
-import SearchBar from '@/components/ui/search-bar'
-
 export default function DashboardSideBar() {
   const pathname = usePathname();
 
@@ -36,15 +34,6 @@ export default function DashboardSideBar() {
           </Link>
           <Link
             className={cn("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-[#A6A6A6] dark:hover:text-[#F9F9FF]", {
-              "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF] dark:bg-[#1A1A1A] dark:text-[#5D51FF] dark:hover:text-[#5D51FF]": pathname === "/dashboard/custom-integration"
-            })}
-            href="/dashboard/custom-integration"
-          >
-            <Code className="h-4 w-4" />
-            Custom Integration
-          </Link>
-          <Link
-            className={cn("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-[#A6A6A6] dark:hover:text-[#F9F9FF]", {
               "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF] dark:bg-[#1A1A1A] dark:text-[#5D51FF] dark:hover:text-[#5D51FF]": pathname === "/dashboard/integration-checklist"
             })}
             href="/dashboard/integration-checklist"
@@ -62,6 +51,15 @@ export default function DashboardSideBar() {
             Opportunities
           </Link>
           <Separator className="my-2 dark:bg-[#333333]" />
+          <Link
+            className={cn("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-[#A6A6A6] dark:hover:text-[#F9F9FF]", {
+              "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF] dark:bg-[#1A1A1A] dark:text-[#5D51FF] dark:hover:text-[#5D51FF]": pathname.startsWith("/dashboard/client-portal")
+            })}
+            href="/dashboard/client-portal"
+          >
+            <LayoutTemplate className="h-4 w-4" />
+            Client Portal
+          </Link>
           <Link
             className={clsx("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900", {
               "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF]": pathname === "/dashboard/settings"

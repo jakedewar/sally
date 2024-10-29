@@ -9,30 +9,37 @@ import OpportunitiesTable from './_components/opportunities-table'
 import OpportunitiesKanban from './_components/opportunities-kanban'
 import OpportunitiesCalendar from './_components/opportunities-calendar'
 import AddOpportunityModal from './_components/add-opportunity-modal'
-
-// Import the Opportunity type
-import { Opportunity } from '@prisma/client'
+import { Opportunity } from './types'
 
 export default function OpportunitiesPage() {
     const [view, setView] = useState<'table' | 'kanban' | 'calendar'>('kanban')
     const [opportunities, setOpportunities] = useState<Opportunity[]>([])
-    const [filter, setFilter] = useState('all') // 'all', 'assigned', 'created'
+    const [filter, setFilter] = useState('all')
+    const [isLoading, setIsLoading] = useState(true)
     const { user } = useUser()
 
     useEffect(() => {
+        const fetchOpportunities = async () => {
+            setIsLoading(true)
+            try {
+                const response = await fetch('/api/opportunities')
+                const data = await response.json()
+                const formattedData = data.map((opp: any) => ({
+                    ...opp,
+                    lastUpdated: new Date(opp.lastUpdated).toISOString(),
+                    createdAt: new Date(opp.createdAt).toISOString()
+                }))
+                setOpportunities(Array.isArray(data) ? formattedData : [])
+            } catch (error) {
+                console.error('Error fetching opportunities:', error)
+                setOpportunities([])
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
         fetchOpportunities()
     }, [])
-
-    const fetchOpportunities = async () => {
-        try {
-            const response = await fetch('/api/opportunities')
-            const data = await response.json()
-            setOpportunities(Array.isArray(data) ? data : [])
-        } catch (error) {
-            console.error('Error fetching opportunities:', error)
-            setOpportunities([])
-        }
-    }
 
     const filteredOpportunities = opportunities.filter((opp) => {
         if (filter === 'all') return true
@@ -80,14 +87,47 @@ export default function OpportunitiesPage() {
             </Tabs>
 
             <div className="mb-4">
-                <Button onClick={() => setFilter('all')} variant={filter === 'all' ? 'default' : 'outline'}>All</Button>
-                <Button onClick={() => setFilter('assigned')} variant={filter === 'assigned' ? 'default' : 'outline'}>Assigned to Me</Button>
-                <Button onClick={() => setFilter('created')} variant={filter === 'created' ? 'default' : 'outline'}>Created by Me</Button>
+                <Button 
+                    onClick={() => setFilter('all')} 
+                    variant={filter === 'all' ? 'default' : 'outline'}
+                    className="mr-2"
+                >
+                    All
+                </Button>
+                <Button 
+                    onClick={() => setFilter('assigned')} 
+                    variant={filter === 'assigned' ? 'default' : 'outline'}
+                    className="mr-2"
+                >
+                    Assigned to Me
+                </Button>
+                <Button 
+                    onClick={() => setFilter('created')} 
+                    variant={filter === 'created' ? 'default' : 'outline'}
+                >
+                    Created by Me
+                </Button>
             </div>
 
-            {view === 'table' && <OpportunitiesTable opportunities={filteredOpportunities} />}
-            {view === 'kanban' && <OpportunitiesKanban opportunities={filteredOpportunities} />}
-            {view === 'calendar' && <OpportunitiesCalendar opportunities={filteredOpportunities} />}
+            {view === 'table' && (
+                <OpportunitiesTable 
+                    opportunities={filteredOpportunities} 
+                    isLoading={isLoading}
+                />
+            )}
+            {view === 'kanban' && (
+                <OpportunitiesKanban 
+                    opportunities={filteredOpportunities} 
+                    setOpportunities={setOpportunities}
+                    isLoading={isLoading}
+                />
+            )}
+            {view === 'calendar' && (
+                <OpportunitiesCalendar 
+                    opportunities={filteredOpportunities}
+                    isLoading={isLoading}
+                />
+            )}
         </div>
     )
 }
