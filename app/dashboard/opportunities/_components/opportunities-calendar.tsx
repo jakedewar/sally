@@ -22,6 +22,11 @@ interface CalendarEvent extends Opportunity {
     end: Date
 }
 
+interface OpportunitiesCalendarProps {
+    opportunities: Opportunity[];
+    isLoading: boolean;
+}
+
 const mockOpportunities: Opportunity[] = [
     { id: '1', companyName: 'TechCorp', contactName: 'John Doe', value: 50000, stage: 'Discovery', priority: 'High', lastUpdated: '2023-05-15' },
     { id: '2', companyName: 'MarketPro', contactName: 'Jane Smith', value: 75000, stage: 'Proposal', priority: 'Medium', lastUpdated: '2023-05-14' },
@@ -34,7 +39,7 @@ const WORK_DAY_START = 9 // 9 AM
 const WORK_DAY_END = 17 // 5 PM
 const HOURS = Array.from({ length: WORK_DAY_END - WORK_DAY_START }, (_, i) => i + WORK_DAY_START)
 
-export default function GoogleStyleCalendar() {
+export default function OpportunitiesCalendar({ opportunities, isLoading }: OpportunitiesCalendarProps) {
     const [currentWeek, setCurrentWeek] = useState(new Date())
     const [events, setEvents] = useState<CalendarEvent[]>([])
 

@@ -9,7 +9,7 @@ import ActionButtons from '../_components/form-action-cards'
 export default function Metrics() {
 
     return (
-        <div className='p-6 bg-white dark:bg-[#000000]'>
+        <div className='p-6 dark:bg-[#000000]'>
       <div className='flex flex-col gap-2'>
         <h1 className='text-2xl font-normal mb-2 text-[#1e1e1e] dark:text-[#F9F9FF]'>
           Metrics

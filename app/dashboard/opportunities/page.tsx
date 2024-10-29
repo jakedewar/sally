@@ -49,7 +49,7 @@ export default function OpportunitiesPage() {
     })
 
     return (
-        <div className='p-6'>
+        <div className='p-6 dark:bg-[#000000]'>
             <div className='flex flex-col gap-2 mb-6'>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-2xl font-normal text-[#1e1e1e] dark:text-[#F9F9FF]'>

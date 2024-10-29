@@ -42,6 +42,16 @@ interface Note {
     opportunityId: string;
 }
 
+// Add this helper function at the top of the component
+const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+    }).format(value);
+}
+
 export default function AddOpportunityModal() {
     const session = useUser()
     const [isOpen, setIsOpen] = useState(false)
@@ -102,7 +112,7 @@ export default function AddOpportunityModal() {
                 companyName: opportunity.companyName,
                 contactName: opportunity.contactName,
                 contactEmail: opportunity.contactEmail,
-                value: parseFloat(opportunity.value?.toString() || '0'),
+                value: Math.abs(parseFloat(opportunity.value?.toString() || '0')),
                 stage: opportunity.stage,
                 priority: opportunity.priority,
                 description: opportunity.description,
@@ -188,15 +198,28 @@ export default function AddOpportunityModal() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="value">Value</Label>
-                            <Input
-                                id="value"
-                                name="value"
-                                type="number"
-                                value={opportunity.value}
-                                onChange={handleInputChange}
-                                required
-                            />
+                            <Label htmlFor="value">Monthly Recurring Revenue (MRR)</Label>
+                            <div className="relative">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                                <Input
+                                    id="value"
+                                    name="value"
+                                    type="number"
+                                    min="0"
+                                    step="100"
+                                    value={opportunity.value ?? ''}
+                                    onChange={handleInputChange}
+                                    className="pl-7 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    placeholder="0"
+                                    required
+                                />
+                                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">/month</span>
+                            </div>
+                            {(opportunity.value ?? 0) > 0 && (
+                                <p className="text-sm text-muted-foreground">
+                                    Annual: {formatCurrency((opportunity.value ?? 0) * 12)}/year
+                                </p>
+                            )}
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="stage">Stage</Label>

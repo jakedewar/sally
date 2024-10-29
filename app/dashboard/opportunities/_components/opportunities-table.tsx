@@ -22,7 +22,12 @@ type Opportunity = {
     createdById: string
 }
 
-export default function OpportunitiesTable({ opportunities }: { opportunities: Opportunity[] }) {
+interface OpportunitiesTableProps {
+    opportunities: Opportunity[];
+    isLoading: boolean;
+}
+
+export default function OpportunitiesTable({ opportunities, isLoading }: OpportunitiesTableProps) {
     const { user } = useUser();
     const [sortColumn, setSortColumn] = useState<keyof Opportunity>('lastUpdated')
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')

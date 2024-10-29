@@ -40,7 +40,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className='p-6 bg-white dark:bg-[#000000]'>
+    <div className='p-6 dark:bg-[#000000]'>
       <div className='flex flex-col gap-2'>
         <h1 className='text-2xl font-normal mb-2 text-[#1e1e1e] dark:text-[#F9F9FF]'>
           Welcome, {isLoaded ? user?.firstName || 'User' : 'Loading...'}
