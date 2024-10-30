@@ -4,11 +4,17 @@ import { cookies } from "next/headers";
 
 export const userUpdate = async ({
   email,
-  first_name,
-  last_name,
-  profile_image_url,
-  user_id,
-}: userUpdateProps) => {
+  firstName,
+  lastName,
+  profileImageUrl,
+  id,
+}: {
+  email: string;
+  firstName: string;
+  lastName: string;
+  profileImageUrl?: string;
+  id: string;
+}) => {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
@@ -29,10 +35,10 @@ export const userUpdate = async ({
       .update([
         {
           email,
-          firstName: first_name,
-          lastName: last_name,
-          profileImageUrl: profile_image_url,
-          id: user_id,
+          firstName,
+          lastName,
+          profileImageUrl,
+          id,
         },
       ])
       .eq("email", email)
