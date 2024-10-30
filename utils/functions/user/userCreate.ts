@@ -1,14 +1,19 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
-import { userCreateProps } from "@/utils/types";
 
 export const userCreate = async ({
   email,
-  first_name,
-  last_name,
-  profile_image_url,
-  user_id,
-}: userCreateProps) => {
+  firstName,
+  lastName,
+  profileImageUrl,
+  id,
+}: {
+  email: string;
+  firstName: string;
+  lastName: string;
+  profileImageUrl?: string;
+  id: string;
+}) => {
   const cookieStore = cookies();
 
   const supabase = createServerClient(
@@ -29,17 +34,21 @@ export const userCreate = async ({
       .insert([
         {
           email,
-          firstName: first_name,
-          lastName: last_name,
-          profileImageUrl: profile_image_url,
-          id: user_id,
+          firstName,
+          lastName,
+          profileImageUrl,
+          id,
         },
       ])
       .select();
 
-    if (error?.code) return error;
-    return data;
-  } catch (error: any) {
-    throw new Error(error.message);
+    if (error) {
+      throw error;
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return { data: null, error };
   }
 };
