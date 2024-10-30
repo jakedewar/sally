@@ -61,10 +61,10 @@ export async function POST(req: Request) {
       try {
         await userCreate({
           email: payload?.data?.email_addresses?.[0]?.email_address,
-          first_name: payload?.data?.first_name,
-          last_name: payload?.data?.last_name,
-          profile_image_url: payload?.data?.profile_image_url,
-          user_id: payload?.data?.id,
+          firstName: payload?.data?.first_name,
+          lastName: payload?.data?.last_name,
+          profileImageUrl: payload?.data?.profile_image_url,
+          id: payload?.data?.id,
         });
 
         return NextResponse.json({
@@ -83,10 +83,10 @@ export async function POST(req: Request) {
       try {
         await userUpdate({
           email: payload?.data?.email_addresses?.[0]?.email_address,
-          first_name: payload?.data?.first_name,
-          last_name: payload?.data?.last_name,
-          profile_image_url: payload?.data?.profile_image_url,
-          user_id: payload?.data?.id,
+          firstName: payload?.data?.first_name,
+          lastName: payload?.data?.last_name,
+          profileImageUrl: payload?.data?.profile_image_url,
+          id: payload?.data?.id,
         });
 
         return NextResponse.json({
