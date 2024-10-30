@@ -178,7 +178,9 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                 throw new Error('Failed to add note');
             }
 
-            queryClient.invalidateQueries(['opportunity', params.id]);
+            queryClient.invalidateQueries({ 
+                queryKey: ['opportunity', params.id]
+            });
             setNewNote('');
             toast.success('Note added successfully');
         } catch (error) {
