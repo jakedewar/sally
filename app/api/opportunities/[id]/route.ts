@@ -75,7 +75,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
         const transformedOpportunity = {
             ...opportunity,
-            notes: opportunity.notes?.map(note => ({
+            notes: opportunity.notes?.map((note: Note) => ({
                 ...note,
                 authorName: note.author ? `${note.author.firstName || ''} ${note.author.lastName || ''}`.trim() : 'Unknown'
             })) || []
