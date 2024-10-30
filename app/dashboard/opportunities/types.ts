@@ -1,5 +1,3 @@
-import { Opportunity as PrismaOpportunity } from '@prisma/client'
-
 export interface Note {
     id: string;
     content: string;
