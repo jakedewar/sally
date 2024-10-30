@@ -98,12 +98,6 @@ export default function OpportunitiesPage() {
                     isLoading={isLoading}
                 />
             )}
-            {view === 'calendar' && (
-                <OpportunitiesCalendar
-                    opportunities={filteredOpportunities}
-                    isLoading={isLoading}
-                />
-            )}
         </div>
     )
 }
