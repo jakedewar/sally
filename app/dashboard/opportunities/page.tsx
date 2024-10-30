@@ -3,17 +3,16 @@
 import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { Button } from "@/components/ui/button"
-import { TableIcon, LayoutGridIcon, CalendarIcon } from 'lucide-react'
+import { TableIcon, LayoutGridIcon } from 'lucide-react'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import OpportunitiesTable from './_components/opportunities-table'
 import OpportunitiesKanban from './_components/opportunities-kanban'
-import OpportunitiesCalendar from './_components/opportunities-calendar'
 import AddOpportunityModal from './_components/add-opportunity-modal'
 import { useOpportunities, useUpdateOpportunity } from '@/lib/hooks/use-opportunities'
 import { Opportunity } from './types'
 
 export default function OpportunitiesPage() {
-    const [view, setView] = useState<'table' | 'kanban' | 'calendar'>('kanban')
+    const [view, setView] = useState<'table' | 'kanban'>('kanban')
     const [filter, setFilter] = useState('all')
     const { user } = useUser()
     const { data: opportunities, isLoading } = useOpportunities()
@@ -54,10 +53,6 @@ export default function OpportunitiesPage() {
                     <TabsTrigger value="table">
                         <TableIcon className="w-4 h-4 mr-2" />
                         Table
-                    </TabsTrigger>
-                    <TabsTrigger value="calendar">
-                        <CalendarIcon className="w-4 h-4 mr-2" />
-                        Calendar
                     </TabsTrigger>
                 </TabsList>
             </Tabs>
