@@ -5,23 +5,32 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-    const { userId: clerkUserId } = auth();
-    if (!clerkUserId) {
+    const { userId } = auth();
+    
+    if (!userId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     try {
-        const { content, author } = await req.json();
+        const { content } = await req.json();
 
-        const newNote = await prisma.note.create({
+        const note = await prisma.note.create({
             data: {
                 content,
-                authorId: author,
-                opportunity: { connect: { id: params.id } }
+                author: {
+                    connect: {
+                        id: userId
+                    }
+                },
+                opportunity: {
+                    connect: {
+                        id: params.id
+                    }
+                }
             }
         });
 
-        return NextResponse.json(newNote);
+        return NextResponse.json(note);
     } catch (error) {
         console.error('Error creating note:', error);
         return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });

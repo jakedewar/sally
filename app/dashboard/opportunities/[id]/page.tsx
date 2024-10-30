@@ -42,6 +42,8 @@ import {
 import { useRouter } from 'next/navigation'
 import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useOpportunity } from '@/lib/hooks/use-opportunities'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Note {
     id: string;
@@ -141,7 +143,8 @@ function OpportunityDetailsSkeleton() {
 }
 
 export default function OpportunityPage({ params }: { params: { id: string } }) {
-    const [opportunity, setOpportunity] = useState<Opportunity | null>(null)
+    const queryClient = useQueryClient()
+    const { data: opportunity, isLoading } = useOpportunity(params.id)
     const { user } = useUser()
     const [newNote, setNewNote] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -158,29 +161,12 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         competition: ''
     })
 
-    useEffect(() => {
-        fetchOpportunity()
-    }, [params.id])
-
-    const fetchOpportunity = async () => {
-        try {
-            const response = await fetch(`/api/opportunities/${params.id}`)
-            if (!response.ok) {
-                throw new Error('Failed to fetch opportunity')
-            }
-            const data = await response.json()
-            setOpportunity(data)
-        } catch (error) {
-            console.error('Error fetching opportunity:', error)
-        }
-    }
-
     const handleAddNote = async () => {
         if (!newNote.trim()) return;
         
         setIsSubmitting(true);
         try {
-            const response = await fetch(`/api/opportunities/${params.id}`, {
+            const response = await fetch(`/api/opportunities/${params.id}/notes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -192,12 +178,9 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                 throw new Error('Failed to add note');
             }
 
-            const addedNote = await response.json();
-            setOpportunity(prev => prev ? {
-                ...prev,
-                notes: [...prev.notes, addedNote]
-            } : null);
+            queryClient.invalidateQueries(['opportunity', params.id]);
             setNewNote('');
+            toast.success('Note added successfully');
         } catch (error) {
             console.error('Error adding note:', error);
             toast.error('Failed to add note');

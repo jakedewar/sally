@@ -8,36 +8,13 @@ import SuccessRate from './_components/success-rate-card'
 import ActionButtons from './_components/form-action-cards'
 import OpportunitiesKanban from './opportunities/_components/opportunities-kanban'
 import { Opportunity } from './opportunities/types'
+import { useOpportunities } from '@/lib/hooks/use-opportunities'
 
 const stages = ['Discovery', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost']
 
 export default function Dashboard() {
   const { user, isLoaded } = useUser()
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchOpportunities = async () => {
-      setIsLoading(true)
-      try {
-        const response = await fetch('/api/opportunities')
-        const data = await response.json()
-        const formattedData = data.map((opp: any) => ({
-          ...opp,
-          lastUpdated: new Date(opp.lastUpdated).toISOString(),
-          createdAt: new Date(opp.createdAt).toISOString()
-        }))
-        setOpportunities(Array.isArray(data) ? formattedData : [])
-      } catch (error) {
-        console.error('Error fetching opportunities:', error)
-        setOpportunities([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchOpportunities()
-  }, [])
+  const { data: opportunities, isLoading } = useOpportunities()
 
   return (
     <div className='p-6 dark:bg-[#000000]'>
@@ -57,8 +34,8 @@ export default function Dashboard() {
         <h2 className='text-lg font-normal mb-2 text-[#1e1e1e] dark:text-[#F9F9FF]'>Opportunities</h2>
         <p className='text-sm text-[#5d5d5d] dark:text-[#A6A6A6] mb-4'>View and manage your opportunities</p>
         <OpportunitiesKanban 
-          opportunities={opportunities} 
-          setOpportunities={setOpportunities}
+          opportunities={opportunities || []}
+          setOpportunities={(opportunities) => {}} 
           isLoading={isLoading}
         />
       </div>
