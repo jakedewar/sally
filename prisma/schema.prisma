@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                    String         @id @default(cuid())
+  createdAt             DateTime       @default(now())
+  email                 String         @unique
+  firstName             String?
+  lastName              String?
+  gender                String?
+  profileImageUrl       String?
+  stripeUserId          String?        @unique
+  payments              Payment[]
+  subscriptions         Subscription[]
+  invoices              Invoice[]
+  opportunities         Opportunity[]  @relation("CreatedBy")
+  assignedOpportunities Opportunity[]  @relation("AssignedSA")
+  notes                 Note[]
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  stripeId        String   @unique
+  amount          Float
+  paymentTime     DateTime
+  currency        String
+  customerDetails String?
+  paymentIntent   String
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id                     String           @id @default(cuid())
+  createdAt              DateTime         @default(now())
+  stripeSubscriptionId   String           @unique
+  status                 String
+  startDate              DateTime
+  endDate                DateTime?
+  defaultPaymentMethodId String?
+  userId                 String
+  user                   User             @relation(fields: [userId], references: [id])
+  planId                 String
+  plan                   SubscriptionPlan @relation(fields: [planId], references: [id])
+  invoices               Invoice[]
+}
+
+model SubscriptionPlan {
+  id            String         @id @default(cuid())
+  createdAt     DateTime       @default(now())
+  name          String
+  description   String
+  amount        Float
+  currency      String
+  interval      String
+  subscriptions Subscription[]
+}
+
+model Invoice {
+  id              String       @id @default(cuid())
+  createdAt       DateTime     @default(now())
+  stripeInvoiceId String       @unique
+  amountPaid      Float
+  amountDue       Float
+  currency        String
+  status          String
+  userId          String
+  user            User         @relation(fields: [userId], references: [id])
+  subscriptionId  String
+  subscription    Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model Opportunity {
+  id                      String   @id @default(cuid())
+  companyName             String
+  contactName             String
+  contactEmail            String
+  value                   Float
+  stage                   String
+  priority                String
+  lastUpdated             DateTime
+  createdAt               DateTime @default(now())
+  description             String?
+  saRequestNotes          String?
+  technologyStack         String[]
+  integrationRequirements String[]
+  complianceRequirements  String[]
+  nextSteps               String?
+  assignedSAId            String?
+  assignedSA              User?    @relation("AssignedSA", fields: [assignedSAId], references: [id])
+  createdById             String
+  createdBy               User     @relation("CreatedBy", fields: [createdById], references: [id])
+  notes                   Note[]
+}
+
+model Note {
+  id            String      @id @default(cuid())
+  content       String
+  createdAt     DateTime    @default(now())
+  authorId      String
+  opportunityId String
+  author        User        @relation(fields: [authorId], references: [id])
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
+
+  @@index([authorId])
+  @@index([opportunityId])
+}
