@@ -373,15 +373,18 @@ export default function AddOpportunityModal() {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="bg-white text-[#5D51FF] border-[#5D51FF] hover:bg-[#F0EEFF] hover:text-[#5D51FF]">
+                <Button 
+                    variant="outline" 
+                    className="bg-background hover:bg-accent text-[#5D51FF] hover:text-[#5D51FF] border-[#5D51FF]/20 hover:border-[#5D51FF]/30"
+                >
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Add Opportunity
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle className="text-[#1e1e1e]">Add New Opportunity</DialogTitle>
-                    <DialogDescription className="text-[#5d5d5d]">
+                    <DialogTitle>Add New Opportunity</DialogTitle>
+                    <DialogDescription>
                         {steps[currentStep].title}
                     </DialogDescription>
                 </DialogHeader>
@@ -390,12 +393,13 @@ export default function AddOpportunityModal() {
                         {steps.map((step, index) => (
                             <div key={index} className="flex flex-col items-center">
                                 <div
-                                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${index < currentStep
-                                        ? 'bg-[#5D51FF] text-white'
-                                        : index === currentStep
-                                            ? 'bg-[#F0EEFF] text-[#5D51FF] border-2 border-[#5D51FF]'
-                                            : 'bg-gray-100 text-gray-400'
-                                        }`}
+                                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                                        index < currentStep
+                                            ? 'bg-[#5D51FF] text-white dark:text-white'
+                                            : index === currentStep
+                                                ? 'bg-[#5D51FF]/10 dark:bg-[#5D51FF]/20 text-[#5D51FF] border-2 border-[#5D51FF]'
+                                                : 'bg-muted text-muted-foreground'
+                                    }`}
                                 >
                                     {index < currentStep ? (
                                         <Check className="w-5 h-5" />
@@ -403,16 +407,19 @@ export default function AddOpportunityModal() {
                                         <span className="text-sm font-semibold">{index + 1}</span>
                                     )}
                                 </div>
-                                <span className={`text-xs mt-2 ${index <= currentStep ? 'text-[#5D51FF] font-medium' : 'text-gray-400'
-                                    }`}>
+                                <span className={`text-xs mt-2 ${
+                                    index <= currentStep 
+                                        ? 'text-[#5D51FF] dark:text-[#8075FF] font-medium' 
+                                        : 'text-muted-foreground'
+                                }`}>
                                     {step.title}
                                 </span>
                             </div>
                         ))}
                     </div>
-                    <div className="w-full bg-gray-100 h-2 rounded-full mt-2">
+                    <div className="w-full bg-muted h-2 rounded-full mt-2">
                         <div
-                            className="bg-[#5D51FF] h-2 rounded-full transition-all duration-300 ease-in-out"
+                            className="bg-[#5D51FF] dark:bg-[#8075FF] h-2 rounded-full transition-all duration-300 ease-in-out"
                             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
                         ></div>
                     </div>
@@ -424,7 +431,8 @@ export default function AddOpportunityModal() {
                             type="button"
                             onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
                             disabled={currentStep === 0}
-                            className="bg-[#F0EEFF] text-[#5D51FF] hover:bg-[#5D51FF] hover:text-white"
+                            variant="outline"
+                            className="hover:bg-[#5D51FF]/10 dark:hover:bg-[#5D51FF]/20 text-[#5D51FF] dark:text-[#8075FF] hover:text-[#5D51FF] border-[#5D51FF]/20"
                         >
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             Previous
@@ -433,13 +441,18 @@ export default function AddOpportunityModal() {
                             <Button
                                 type="button"
                                 onClick={() => setCurrentStep(prev => Math.min(steps.length - 1, prev + 1))}
-                                className="bg-[#5D51FF] text-white hover:bg-[#4B41CC]"
+                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD]"
                             >
                                 Next
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                         ) : (
-                            <Button type="submit" className="bg-[#5D51FF] text-white hover:bg-[#4B41CC]">Save Opportunity</Button>
+                            <Button 
+                                type="submit" 
+                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD]"
+                            >
+                                Save Opportunity
+                            </Button>
                         )}
                     </div>
                 </form>

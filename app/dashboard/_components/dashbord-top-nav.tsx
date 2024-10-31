@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
+import NotificationsDropdown from './notifications-dropdown'
 
 export default function DashboardTopNav({ toggleSidebar }: { toggleSidebar: () => void }) {
   const pathname = usePathname()
@@ -23,10 +24,10 @@ export default function DashboardTopNav({ toggleSidebar }: { toggleSidebar: () =
         <HeartHandshake className="h-6 w-6 text-[#5D51FF]" />
         <span className="hidden md:inline">Sally</span>
       </Link>
-      <p className="text-xs text-[#A6A6A6]">
-        Your SA Ally
-      </p>
       <div className="ml-auto flex items-center gap-4">
+        {isLoaded && isSignedIn && (
+          <NotificationsDropdown />
+        )}
         <div className="hover:bg-[#1A1A1A] rounded p-1 transition-colors">
           <ModeToggle />
         </div>

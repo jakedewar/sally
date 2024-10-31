@@ -33,11 +33,13 @@ export default function Dashboard() {
       <div className='flex flex-col'>
         <h2 className='text-lg font-normal mb-2 text-[#1e1e1e] dark:text-[#F9F9FF]'>Opportunities</h2>
         <p className='text-sm text-[#5d5d5d] dark:text-[#A6A6A6] mb-4'>View and manage your opportunities</p>
-        <OpportunitiesKanban 
-          opportunities={opportunities || []}
-          setOpportunities={(opportunities) => {}} 
-          isLoading={isLoading}
-        />
+        <div className="h-[calc(100vh-280px)] sm:h-[calc(100vh-300px)] md:h-[calc(100vh-320px)]">
+          <OpportunitiesKanban 
+            opportunities={opportunities || []}
+            setOpportunities={(opportunities) => {}} 
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </div>
   )

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import PageWrapper from "@/components/wrapper/page-wrapper"
 import Link from "next/link"
+import { useRotatingText } from '@/hooks/useRotatingText';
 
 const StarBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -63,6 +64,14 @@ const StarBackground = () => {
 }
 
 export default function Home() {
+  const { currentWord, isAnimating } = useRotatingText([
+    'Sales',
+    'Success',
+    'Strategy',
+    'Solutions',
+    'Synergy'
+  ], 2500);
+
   return (
     <PageWrapper>
       <div className="relative min-h-screen bg-[#000000] text-white w-full overflow-hidden">
@@ -76,10 +85,18 @@ export default function Home() {
                 <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl text-[#F9F9FF]">
                   <span className="text-[#5D51FF]">
                     Sally
-                  </span> - Your Inter-Dimensional <span className="text-[#5D51FF]">SA</span> Ally
+                  </span> - Your{' '}
+                  <span 
+                    className={`text-[#5D51FF] inline-block transition-all duration-500 ${
+                      isAnimating ? 'opacity-0 transform -translate-y-4' : 'opacity-100 transform translate-y-0'
+                    }`}
+                  >
+                    {currentWord}
+                  </span>{' '}
+                    Ally
                 </h1>
                 <p className="mx-auto max-w-[700px] text-xl text-[#F9F9FF] md:text-2xl/relaxed lg:text-3xl/relaxed">
-                  Expand Your Klaviyo Solution Architecture with Cosmic Deal Management
+                  Drive inter-dimensional revenue with Sally-powered Klaviyo
                 </p>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <Link href="/sign-up">

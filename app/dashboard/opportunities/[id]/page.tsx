@@ -31,7 +31,8 @@ import {
     ClipboardList,
     StickyNote,
     History,
-    Target
+    Target,
+    X
 } from 'lucide-react'
 import {
     DropdownMenu,
@@ -44,6 +45,7 @@ import { toast } from "sonner"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useOpportunity } from '@/lib/hooks/use-opportunities'
 import { useQueryClient } from '@tanstack/react-query'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface Note {
     id: string;
@@ -286,7 +288,7 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                         <CardTitle className="text-sm font-medium">
                             Value
                         </CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                        <DollarSign className="h-4 w-4 text-[#5D51FF]" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">${opportunity.value.toLocaleString()}</div>
@@ -297,7 +299,7 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                         <CardTitle className="text-sm font-medium">
                             Stage
                         </CardTitle>
-                        <BarChart className="h-4 w-4 text-muted-foreground" />
+                        <BarChart className="h-4 w-4 text-[#5D51FF]" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{opportunity.stage}</div>
@@ -308,7 +310,7 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                         <CardTitle className="text-sm font-medium">
                             Priority
                         </CardTitle>
-                        <Info className="h-4 w-4 text-muted-foreground" />
+                        <Info className="h-4 w-4 text-[#5D51FF]" />
                     </CardHeader>
                     <CardContent>
                         <Badge variant={opportunity.priority === 'high' ? 'destructive' : opportunity.priority === 'medium' ? 'default' : 'secondary'}>
@@ -390,22 +392,47 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                 <div>
                                     <h3 className="font-semibold mb-2">Created By</h3>
                                     {opportunity.createdBy ? (
-                                        <>
-                                            <p>{`${opportunity.createdBy.firstName || ''} ${opportunity.createdBy.lastName || ''}`.trim() || 'N/A'}</p>
+                                        <div className="space-y-2">
+                                            <div className="inline-block">
+                                                <Badge 
+                                                    variant="secondary" 
+                                                    className="flex items-center gap-2 px-2 py-1 text-sm whitespace-nowrap rounded-lg"
+                                                >
+                                                    <Avatar className="h-5 w-5 rounded-lg">
+                                                        <AvatarFallback className="text-xs bg-primary/10 rounded-lg">
+                                                            {`${opportunity.createdBy.firstName?.[0] || ''}${opportunity.createdBy.lastName?.[0] || ''}`}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    {`${opportunity.createdBy.firstName || ''} ${opportunity.createdBy.lastName || ''}`.trim() || 'N/A'}
+                                                    <X className="h-3 w-3 cursor-pointer opacity-50 hover:opacity-100" />
+                                                </Badge>
+                                            </div>
                                             <p className="text-sm text-gray-500">{opportunity.createdBy.email || 'N/A'}</p>
-                                        </>
+                                        </div>
                                     ) : (
-                                        
                                         <p className="text-sm text-gray-500">Information not available</p>
                                     )}
                                 </div>
                                 <div>
                                     <h3 className="font-semibold mb-2">Assigned SA</h3>
                                     {opportunity.assignedSA ? (
-                                        <>
-                                            <p>{`${opportunity.assignedSA.firstName || ''} ${opportunity.assignedSA.lastName || ''}`.trim() || 'N/A'}</p>
+                                        <div className="space-y-2">
+                                            <div className="inline-block">
+                                                <Badge 
+                                                    variant="secondary" 
+                                                    className="flex items-center gap-2 px-2 py-1 text-sm whitespace-nowrap rounded-lg"
+                                                >
+                                                    <Avatar className="h-5 w-5 rounded-lg">
+                                                        <AvatarFallback className="text-xs bg-primary/10 rounded-lg">
+                                                            {`${opportunity.assignedSA.firstName?.[0] || ''}${opportunity.assignedSA.lastName?.[0] || ''}`}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    {`${opportunity.assignedSA.firstName || ''} ${opportunity.assignedSA.lastName || ''}`.trim() || 'N/A'}
+                                                    <X className="h-3 w-3 cursor-pointer opacity-50 hover:opacity-100" />
+                                                </Badge>
+                                            </div>
                                             <p className="text-sm text-gray-500">{opportunity.assignedSA.email || 'N/A'}</p>
-                                        </>
+                                        </div>
                                     ) : (
                                         <p className="text-sm text-gray-500">Not assigned</p>
                                     )}
@@ -463,15 +490,25 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                             <div className="space-y-4">
                                 {opportunity.notes && opportunity.notes.length > 0 ? (
                                     opportunity.notes.map((note) => (
-                                        <div key={note.id} className="bg-gray-100 p-4 rounded-lg">
-                                            <p className="text-sm text-gray-500 mb-2">
-                                                {new Date(note.createdAt).toLocaleString()} - {note.authorName}
-                                            </p>
-                                            <p>{note.content}</p>
+                                        <div key={note.id} className="bg-muted/50 p-4 rounded-lg space-y-2 hover:bg-muted/70 transition-colors">
+                                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                <Avatar className="h-6 w-6">
+                                                    <AvatarFallback className="text-xs bg-primary/10">
+                                                        {note.authorName?.[0]}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <span className="font-medium">{note.authorName}</span>
+                                                <span>•</span>
+                                                <span>{new Date(note.createdAt).toLocaleString()}</span>
+                                            </div>
+                                            <p className="text-sm">{note.content}</p>
                                         </div>
                                     ))
                                 ) : (
-                                    <p className="text-gray-500 italic">No notes available for this opportunity.</p>
+                                    <div className="text-center py-8 text-muted-foreground">
+                                        <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                                        <p className="text-sm">No notes available for this opportunity.</p>
+                                    </div>
                                 )}
                             </div>
                             <Separator className="my-4" />

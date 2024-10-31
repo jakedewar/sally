@@ -291,7 +291,7 @@ export default function ClientPortal() {
                       <AvatarFallback>CT</AvatarFallback>
                     </Avatar>
                     <div className="ml-2">
-                      <p className="font-semibold">Chris (TechStyle CTO)</p>
+                      <p className="font-semibold">Jake (TechStyle CTO)</p>
                       <p className="text-sm text-gray-600">1 day ago</p>
                     </div>
                   </div>
