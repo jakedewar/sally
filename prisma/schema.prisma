@@ -23,6 +23,7 @@ model User {
   opportunities         Opportunity[]  @relation("CreatedBy")
   assignedOpportunities Opportunity[]  @relation("AssignedSA")
   notes                 Note[]
+  clientPortals         ClientPortal[]
 }
 
 model Payment {
@@ -79,7 +80,7 @@ model Invoice {
 }
 
 model Opportunity {
-  id                      String   @id @default(cuid())
+  id                      String                 @id @default(cuid())
   companyName             String
   contactName             String
   contactEmail            String
@@ -87,7 +88,7 @@ model Opportunity {
   stage                   String
   priority                String
   lastUpdated             DateTime
-  createdAt               DateTime @default(now())
+  createdAt               DateTime               @default(now())
   description             String?
   saRequestNotes          String?
   technologyStack         String[]
@@ -95,10 +96,15 @@ model Opportunity {
   complianceRequirements  String[]
   nextSteps               String?
   assignedSAId            String?
-  assignedSA              User?    @relation("AssignedSA", fields: [assignedSAId], references: [id])
+  assignedSA              User?                  @relation("AssignedSA", fields: [assignedSAId], references: [id])
   createdById             String
-  createdBy               User     @relation("CreatedBy", fields: [createdById], references: [id])
-  notes                   Note[]
+  createdBy               User                   @relation("CreatedBy", fields: [createdById], references: [id])
+  notes                   Note[]                 @relation("OpportunityNotes")
+  portalData              OpportunityPortalData?
+  clientPortal            ClientPortal[]
+
+  @@index([assignedSAId])
+  @@index([createdById])
 }
 
 model Note {
@@ -108,8 +114,39 @@ model Note {
   authorId      String
   opportunityId String
   author        User        @relation(fields: [authorId], references: [id])
-  opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
+  opportunity   Opportunity @relation("OpportunityNotes", fields: [opportunityId], references: [id])
 
   @@index([authorId])
   @@index([opportunityId])
+}
+
+model OpportunityPortalData {
+  id                  String      @id @default(cuid())
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  opportunityId       String      @unique
+  opportunity         Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  integrationProgress Json?
+  engagementStages    Json?
+  isPublished         Boolean     @default(false)
+  accessToken         String?     @unique
+  lastAccessed        DateTime?
+
+  @@index([opportunityId])
+}
+
+model ClientPortal {
+  id            String      @id @default(cuid())
+  accessToken   String      @unique
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
+  createdAt     DateTime    @default(now())
+  lastAccessed  DateTime?
+  isActive      Boolean     @default(true)
+  expiresAt     DateTime?
+  createdById   String
+  createdBy     User        @relation(fields: [createdById], references: [id])
+
+  @@index([opportunityId])
+  @@index([createdById])
 }

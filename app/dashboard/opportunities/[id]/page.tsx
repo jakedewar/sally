@@ -32,7 +32,9 @@ import {
     StickyNote,
     History,
     Target,
-    X
+    X,
+    Share2,
+    Link as LinkIcon
 } from 'lucide-react'
 import {
     DropdownMenu,
@@ -92,6 +94,16 @@ interface Opportunity {
         firstName: string | null;
         lastName: string | null;
     };
+}
+
+interface ClientPortal {
+    id: string;
+    opportunityId: string;
+    accessToken: string;
+    createdAt: string;
+    lastAccessed?: string;
+    isActive: boolean;
+    expiresAt?: string;
 }
 
 function OpportunityDetailsSkeleton() {
@@ -162,6 +174,9 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         championCoach: '',
         competition: ''
     })
+    const [isGeneratingPortal, setIsGeneratingPortal] = useState(false)
+    const [portalData, setPortalData] = useState<ClientPortal | null>(null)
+    const [isLoadingPortal, setIsLoadingPortal] = useState(false)
 
     const handleAddNote = async () => {
         if (!newNote.trim()) return;
@@ -243,12 +258,62 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         }
     }
 
+    const handleViewClientPortal = () => {
+        if (portalData?.accessToken) {
+            window.open(`/portal/${portalData.accessToken}`, '_blank')
+        }
+    }
+
+    const handleGeneratePortal = async () => {
+        setIsGeneratingPortal(true)
+        try {
+            const response = await fetch(`/api/opportunities/${params.id}/portal`, {
+                method: 'POST',
+            })
+
+            if (!response.ok) {
+                throw new Error('Failed to generate portal')
+            }
+
+            const data = await response.json()
+            setPortalData(data)
+            queryClient.invalidateQueries({ queryKey: ['opportunity', params.id] })
+            toast.success('Client portal generated successfully')
+        } catch (error) {
+            console.error('Error generating portal:', error)
+            toast.error('Failed to generate client portal')
+        } finally {
+            setIsGeneratingPortal(false)
+        }
+    }
+
+    const fetchPortalData = async () => {
+        setIsLoadingPortal(true)
+        try {
+            const response = await fetch(`/api/opportunities/${params.id}/portal`)
+            if (response.ok) {
+                const data = await response.json()
+                setPortalData(data)
+            }
+        } catch (error) {
+            console.error('Error fetching portal data:', error)
+        } finally {
+            setIsLoadingPortal(false)
+        }
+    }
+
+    useEffect(() => {
+        if (activeTab === 'portal') {
+            fetchPortalData()
+        }
+    }, [activeTab, params.id])
+
     if (!opportunity) {
         return <OpportunityDetailsSkeleton />
     }
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="p-6">
             <Link href="/dashboard/opportunities" className="inline-flex items-center text-sm text-[#5D51FF] hover:text-[#4940CC] mb-4">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Opportunities
@@ -325,8 +390,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                     <button
                         onClick={() => setActiveTab('details')}
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'details'
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         <ClipboardList className="h-4 w-4" />
@@ -335,8 +400,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                     <button
                         onClick={() => setActiveTab('notes')}
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'notes'
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         <StickyNote className="h-4 w-4" />
@@ -345,8 +410,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                     <button
                         onClick={() => setActiveTab('activity')}
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'activity'
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         <History className="h-4 w-4" />
@@ -355,8 +420,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                     <button
                         onClick={() => setActiveTab('meddpicc')}
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'meddpicc'
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         <Target className="h-4 w-4" />
@@ -365,8 +430,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                     <button
                         onClick={() => setActiveTab('portal')}
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'portal'
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         <Users className="h-4 w-4" />
@@ -597,28 +662,110 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                         <CardHeader>
                             <CardTitle>Client Portal Management</CardTitle>
                             <CardDescription>
-                                Manage client portal access and customize portal content for this opportunity.
+                                Generate and manage client portal access for this opportunity.
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="space-y-4">
-                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                                    <div className="flex">
-                                        <div className="flex-shrink-0">
-                                            <Info className="h-5 w-5 text-yellow-400" />
-                                        </div>
-                                        <div className="ml-3">
-                                            <p className="text-sm text-yellow-700">
-                                                Client portal functionality will be implemented soon. This will allow you to:
-                                            </p>
-                                            <ul className="list-disc ml-5 mt-2 text-sm text-yellow-700">
-                                                <li>Generate unique client portal access</li>
-                                                <li>Customize visible information</li>
-                                                <li>Track client portal activity</li>
-                                                <li>Manage document sharing</li>
-                                            </ul>
+                            <div className="space-y-6">
+                                {isLoadingPortal ? (
+                                    <div className="space-y-4">
+                                        <div className="text-center py-6">
+                                            <Skeleton className="h-12 w-12 mx-auto mb-4 rounded-full" />
+                                            <Skeleton className="h-4 w-48 mx-auto mb-2" />
+                                            <Skeleton className="h-4 w-64 mx-auto mb-4" />
+                                            <Skeleton className="h-10 w-40 mx-auto" />
                                         </div>
                                     </div>
+                                ) : portalData ? (
+                                    <>
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <h3 className="font-semibold">Portal Status</h3>
+                                                    <p className="text-sm text-gray-500">
+                                                        {portalData.isActive ? 'Active' : 'Inactive'} • Created {new Date(portalData.createdAt).toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                                <Badge variant={portalData.isActive ? "default" : "secondary"}>
+                                                    {portalData.isActive ? 'Active' : 'Inactive'}
+                                                </Badge>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label>Portal URL</Label>
+                                                <div className="flex gap-2">
+                                                    <Input
+                                                        readOnly
+                                                        value={`${window.location.origin}/portal/${portalData.accessToken}`}
+                                                        className="flex-1"
+                                                    />
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(`${window.location.origin}/portal/${portalData.accessToken}`)
+                                                            toast.success('Portal URL copied to clipboard')
+                                                        }}
+                                                    >
+                                                        <LinkIcon className="h-4 w-4 mr-2" />
+                                                        Copy
+                                                    </Button>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    onClick={handleViewClientPortal}
+                                                    variant="outline"
+                                                >
+                                                    <Eye className="mr-2 h-4 w-4" />
+                                                    Preview Portal
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        // Implement share functionality
+                                                        // This could open a modal with sharing options
+                                                    }}
+                                                >
+                                                    <Share2 className="mr-2 h-4 w-4" />
+                                                    Share Portal
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="space-y-4">
+                                        <div className="text-center py-6">
+                                            <Users className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                                            <h3 className="font-semibold mb-2">No Client Portal Generated</h3>
+                                            <p className="text-sm text-gray-500 mb-4">
+                                                Generate a unique client portal to share opportunity details and progress with your client.
+                                            </p>
+                                            <Button
+                                                onClick={handleGeneratePortal}
+                                                disabled={isGeneratingPortal}
+                                            >
+                                                {isGeneratingPortal ? (
+                                                    "Generating..."
+                                                ) : (
+                                                    <>
+                                                        <Plus className="mr-2 h-4 w-4" />
+                                                        Generate Client Portal
+                                                    </>
+                                                )}
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <Separator />
+
+                                <div className="space-y-2">
+                                    <h3 className="font-semibold">Portal Settings</h3>
+                                    <p className="text-sm text-gray-500">
+                                        Customize what information is visible to clients in the portal.
+                                    </p>
+                                    {/* Add portal settings controls here */}
                                 </div>
                             </div>
                         </CardContent>

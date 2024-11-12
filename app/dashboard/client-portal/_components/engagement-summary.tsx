@@ -17,6 +17,15 @@ interface EngagementStage {
   status: 'pending' | 'approved' | 'disputed'
 }
 
+interface Opportunity {
+  createdAt: string;
+  description?: string;
+}
+
+interface EngagementSummaryProps {
+  opportunity: Opportunity;
+}
+
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -26,13 +35,13 @@ function formatDate(dateString: string): string {
   });
 }
 
-export default function EngagementSummary() {
+export default function EngagementSummary({ opportunity }: EngagementSummaryProps) {
   const [stages, setStages] = useState<EngagementStage[]>([
     {
       id: '1',
       name: 'Initial Discovery',
-      date: '2023-10-01',
-      saNote: "TechStyle Boutique is looking to improve their email marketing and customer segmentation. They're currently using a basic ESP and are interested in Klaviyo's advanced segmentation capabilities.",
+      date: opportunity.createdAt,
+      saNote: opportunity.description || "Initial discovery phase",
       prospectFeedback: "",
       status: 'pending'
     },
@@ -66,14 +75,14 @@ export default function EngagementSummary() {
   }
 
   const handleSANoteSave = (stageId: string) => {
-    setStages(stages.map(stage => 
+    setStages(stages.map(stage =>
       stage.id === stageId ? { ...stage, saNote: editedNote } : stage
     ))
     setEditingStage(null)
   }
 
   const handleProspectFeedback = (stageId: string, feedback: string, newStatus: 'approved' | 'disputed') => {
-    setStages(stages.map(stage => 
+    setStages(stages.map(stage =>
       stage.id === stageId ? { ...stage, prospectFeedback: feedback, status: newStatus } : stage
     ))
   }

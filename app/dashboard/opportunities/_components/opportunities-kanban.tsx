@@ -110,7 +110,7 @@ export default function OpportunitiesKanban({
     }
 
     return (
-        <div className="flex gap-2 sm:gap-4 overflow-x-auto h-full pb-6">
+        <div className="flex gap-2 sm:gap-4 overflow-x-auto h-full pb-6 w-full min-w-0">
             {stages.map((stage) => {
                 const stageOpportunities = getOpportunitiesByStage(stage)
                 const isEmpty = stageOpportunities.length === 0
@@ -118,13 +118,12 @@ export default function OpportunitiesKanban({
                 return (
                     <AnimatePresence key={stage}>
                         <motion.div
-                            initial={{ width: "280px", opacity: 1 }}
+                            initial={{ opacity: 1 }}
                             animate={{
-                                width: isEmpty ? "64px" : "min(280px, calc(100vw - 2rem))",
                                 opacity: isEmpty ? 0.7 : 1,
                             }}
                             transition={{ duration: 0.3, ease: "easeInOut" }}
-                            className={`flex-shrink-0 ${isEmpty ? 'border-dashed' : 'border-solid'
+                            className={`flex-1 min-w-[280px] ${isEmpty ? 'border-dashed' : 'border-solid'
                                 } border border-border rounded-lg bg-background flex flex-col h-full`}
                         >
                             <div className={`p-3 sm:p-4 border-b border-border flex-shrink-0 ${isEmpty ? 'h-full flex items-center justify-center' : ''
