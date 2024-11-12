@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, Suspense } from 'react'
 import { ArrowRight, LayoutDashboard, FileText, CheckSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -104,7 +104,8 @@ const features = [
     }
 ]
 
-export default function Features() {
+// Create a separate component for the content that uses useSearchParams
+const FeaturesContent = () => {
     const searchParams = useSearchParams()
     const [activeTab, setActiveTab] = useState(() => {
         const hash = searchParams.get('tab')
@@ -228,4 +229,17 @@ export default function Features() {
             </div>
         </PageWrapper>
     );
+}
+
+// Main Features component with Suspense boundary
+export default function Features() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-[#000000] flex items-center justify-center">
+                <div className="text-white text-xl">Loading...</div>
+            </div>
+        }>
+            <FeaturesContent />
+        </Suspense>
+    )
 }
