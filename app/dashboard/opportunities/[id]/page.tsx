@@ -32,13 +32,9 @@ import {
     StickyNote,
     History,
     Target,
-<<<<<<< HEAD
     X,
     Share2,
     Link as LinkIcon
-=======
-    X
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 } from 'lucide-react'
 import {
     DropdownMenu,
@@ -100,7 +96,6 @@ interface Opportunity {
     };
 }
 
-<<<<<<< HEAD
 interface ClientPortal {
     id: string;
     opportunityId: string;
@@ -111,8 +106,6 @@ interface ClientPortal {
     expiresAt?: string;
 }
 
-=======
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 function OpportunityDetailsSkeleton() {
     return (
         <div className="container mx-auto p-6">
@@ -181,7 +174,6 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         championCoach: '',
         competition: ''
     })
-<<<<<<< HEAD
     const [isGeneratingPortal, setIsGeneratingPortal] = useState(false)
     const [portalData, setPortalData] = useState<ClientPortal | null>(null)
     const [isLoadingPortal, setIsLoadingPortal] = useState(false)
@@ -189,12 +181,6 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
     const handleAddNote = async () => {
         if (!newNote.trim()) return;
 
-=======
-
-    const handleAddNote = async () => {
-        if (!newNote.trim()) return;
-        
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
         setIsSubmitting(true);
         try {
             const response = await fetch(`/api/opportunities/${params.id}/notes`, {
@@ -209,11 +195,7 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                 throw new Error('Failed to add note');
             }
 
-<<<<<<< HEAD
             queryClient.invalidateQueries({
-=======
-            queryClient.invalidateQueries({ 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 queryKey: ['opportunity', params.id]
             });
             setNewNote('');
@@ -276,7 +258,6 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         }
     }
 
-<<<<<<< HEAD
     const handleViewClientPortal = () => {
         if (portalData?.accessToken) {
             window.open(`/portal/${portalData.accessToken}`, '_blank')
@@ -327,20 +308,13 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
         }
     }, [activeTab, params.id])
 
-=======
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
     if (!opportunity) {
         return <OpportunityDetailsSkeleton />
     }
 
     return (
-<<<<<<< HEAD
-        <div className="p-6">
-            <Link href="/dashboard/opportunities" className="inline-flex items-center text-sm text-[#5D51FF] hover:text-[#4940CC] mb-4">
-=======
         <div className="container mx-auto p-6">
             <Link href="/dashboard/opportunities" className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-4">
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Opportunities
             </Link>
@@ -361,11 +335,7 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                 <Edit className="mr-2 h-4 w-4" />
                                 Edit
                             </DropdownMenuItem>
-<<<<<<< HEAD
                             <DropdownMenuItem
-=======
-                            <DropdownMenuItem 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 className="text-red-600"
                                 onClick={handleDelete}
                             >
@@ -419,90 +389,50 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                 <div className="flex gap-4 border-b">
                     <button
                         onClick={() => setActiveTab('details')}
-<<<<<<< HEAD
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'details'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                             }`}
-=======
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                            activeTab === 'details' 
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                                : 'text-gray-500 hover:text-gray-700'
-                        }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                     >
                         <ClipboardList className="h-4 w-4" />
                         Details
                     </button>
                     <button
                         onClick={() => setActiveTab('notes')}
-<<<<<<< HEAD
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'notes'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                             }`}
-=======
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                            activeTab === 'notes' 
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                                : 'text-gray-500 hover:text-gray-700'
-                        }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                     >
                         <StickyNote className="h-4 w-4" />
                         Notes
                     </button>
                     <button
                         onClick={() => setActiveTab('activity')}
-<<<<<<< HEAD
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'activity'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                             }`}
-=======
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                            activeTab === 'activity' 
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                                : 'text-gray-500 hover:text-gray-700'
-                        }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                     >
                         <History className="h-4 w-4" />
                         Activity
                     </button>
                     <button
                         onClick={() => setActiveTab('meddpicc')}
-<<<<<<< HEAD
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'meddpicc'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                             }`}
-=======
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                            activeTab === 'meddpicc' 
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                                : 'text-gray-500 hover:text-gray-700'
-                        }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                     >
                         <Target className="h-4 w-4" />
                         MEDDPICC
                     </button>
                     <button
                         onClick={() => setActiveTab('portal')}
-<<<<<<< HEAD
                         className={`flex items-center gap-2 px-4 py-2 ${activeTab === 'portal'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                             }`}
-=======
-                        className={`flex items-center gap-2 px-4 py-2 ${
-                            activeTab === 'portal' 
-                                ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                                : 'text-gray-500 hover:text-gray-700'
-                        }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                     >
                         <Users className="h-4 w-4" />
                         Client Portal
@@ -524,13 +454,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                     {opportunity.createdBy ? (
                                         <div className="space-y-2">
                                             <div className="inline-block">
-<<<<<<< HEAD
                                                 <Badge
                                                     variant="secondary"
-=======
-                                                <Badge 
-                                                    variant="secondary" 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                                     className="flex items-center gap-2 px-2 py-1 text-sm whitespace-nowrap rounded-lg"
                                                 >
                                                     <Avatar className="h-5 w-5 rounded-lg">
@@ -553,13 +478,8 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                     {opportunity.assignedSA ? (
                                         <div className="space-y-2">
                                             <div className="inline-block">
-<<<<<<< HEAD
                                                 <Badge
                                                     variant="secondary"
-=======
-                                                <Badge 
-                                                    variant="secondary" 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                                     className="flex items-center gap-2 px-2 py-1 text-sm whitespace-nowrap rounded-lg"
                                                 >
                                                     <Avatar className="h-5 w-5 rounded-lg">
@@ -652,22 +572,13 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                 )}
                             </div>
                             <Separator className="my-4" />
-<<<<<<< HEAD
                             <Textarea
                                 placeholder="Add a new note..."
-=======
-                            <Textarea 
-                                placeholder="Add a new note..." 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 className="mb-2"
                                 value={newNote}
                                 onChange={(e) => setNewNote(e.target.value)}
                             />
-<<<<<<< HEAD
                             <Button
-=======
-                            <Button 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 onClick={handleAddNote}
                                 disabled={isSubmitting || !newNote.trim()}
                             >
@@ -751,7 +662,6 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                         <CardHeader>
                             <CardTitle>Client Portal Management</CardTitle>
                             <CardDescription>
-<<<<<<< HEAD
                                 Generate and manage client portal access for this opportunity.
                             </CardDescription>
                         </CardHeader>
@@ -856,30 +766,6 @@ export default function OpportunityPage({ params }: { params: { id: string } }) 
                                         Customize what information is visible to clients in the portal.
                                     </p>
                                     {/* Add portal settings controls here */}
-=======
-                                Manage client portal access and customize portal content for this opportunity.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                                    <div className="flex">
-                                        <div className="flex-shrink-0">
-                                            <Info className="h-5 w-5 text-yellow-400" />
-                                        </div>
-                                        <div className="ml-3">
-                                            <p className="text-sm text-yellow-700">
-                                                Client portal functionality will be implemented soon. This will allow you to:
-                                            </p>
-                                            <ul className="list-disc ml-5 mt-2 text-sm text-yellow-700">
-                                                <li>Generate unique client portal access</li>
-                                                <li>Customize visible information</li>
-                                                <li>Track client portal activity</li>
-                                                <li>Manage document sharing</li>
-                                            </ul>
-                                        </div>
-                                    </div>
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 </div>
                             </div>
                         </CardContent>

@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-<<<<<<< HEAD
 import { prisma } from '@/lib/prisma'
-=======
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 
 // Add type for the Note
 type Note = {
@@ -60,7 +54,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             include: {
                 notes: {
                     include: {
-                        author: true  // This includes all fields by default
+                        author: true
                     }
                 },
                 assignedSA: {
@@ -104,11 +98,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         }
 
         const { content } = await req.json();
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
         if (!content) {
             return NextResponse.json({ error: "Note content is required" }, { status: 400 });
         }
@@ -116,7 +106,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         const newNote = await prisma.note.create({
             data: {
                 content,
-                author: clerkUserId,
+                authorId: clerkUserId,
                 opportunityId: params.id
             },
             include: {
@@ -127,13 +117,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         // Transform the note to include authorName
         const transformedNote = {
             ...newNote,
-<<<<<<< HEAD
             authorName: newNote.author
                 ? `${newNote.author.firstName || ''} ${newNote.author.lastName || ''}`.trim()
-=======
-            authorName: newNote.author 
-                ? `${newNote.author.firstName || ''} ${newNote.author.lastName || ''}`.trim() 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 : 'Unknown'
         };
 
@@ -167,5 +152,3 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
         await prisma.$disconnect();
     }
 }
-
-// Implement PUT, DELETE handlers here if needed

@@ -22,7 +22,6 @@ export default function OpportunitiesPage() {
     const { mutate: updateOpportunity } = useUpdateOpportunity()
 
     const filteredOpportunities = opportunities?.filter((opp) => {
-<<<<<<< HEAD
         const ownershipFilter =
             filter === 'all' ? true :
                 filter === 'assigned' ? opp.assignedSAId === user?.id :
@@ -36,21 +35,6 @@ export default function OpportunitiesPage() {
             opp.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             opp.stage.toLowerCase().includes(searchQuery.toLowerCase()) ||
             opp.priority.toLowerCase().includes(searchQuery.toLowerCase())
-=======
-        const ownershipFilter = 
-            filter === 'all' ? true :
-            filter === 'assigned' ? opp.assignedSAId === user?.id :
-            filter === 'created' ? opp.createdById === user?.id :
-            true
-
-        const searchFilter = searchQuery
-            ? opp.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              opp.contactName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              opp.contactEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              opp.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              opp.stage.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              opp.priority.toLowerCase().includes(searchQuery.toLowerCase())
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
             : true
 
         return ownershipFilter && searchFilter
@@ -58,15 +42,9 @@ export default function OpportunitiesPage() {
 
     const handleSetOpportunities = (newOpportunities: Opportunity[]) => {
         newOpportunities.forEach(opportunity => {
-<<<<<<< HEAD
             updateOpportunity({
                 id: opportunity.id,
                 data: opportunity
-=======
-            updateOpportunity({ 
-                id: opportunity.id, 
-                data: opportunity 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
             })
         })
     }
@@ -76,11 +54,7 @@ export default function OpportunitiesPage() {
     }
 
     return (
-<<<<<<< HEAD
-        <div className="p-4 sm:p-6">
-=======
         <div className="container mx-auto p-4 sm:p-6">
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                 <div>
                     <h1 className="text-xl sm:text-2xl font-semibold mb-2">Opportunities</h1>
@@ -88,11 +62,7 @@ export default function OpportunitiesPage() {
                 </div>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                     <div className="relative w-full sm:w-[320px]">
-<<<<<<< HEAD
                         <SearchBar
-=======
-                        <SearchBar 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                             onSearch={setSearchQuery}
                             placeholder="Search opportunities..."
                             value={searchQuery}
@@ -132,36 +102,20 @@ export default function OpportunitiesPage() {
             <div className="flex gap-4 border-b mb-6 overflow-x-auto">
                 <button
                     onClick={() => setView('kanban')}
-<<<<<<< HEAD
                     className={`flex items-center gap-2 px-4 py-2 ${view === 'kanban'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
-=======
-                    className={`flex items-center gap-2 px-4 py-2 ${
-                        view === 'kanban' 
-                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                            : 'text-gray-500 hover:text-gray-700'
-                    }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 >
                     <LayoutGridIcon className="h-4 w-4" />
                     <span className="whitespace-nowrap">Kanban</span>
                 </button>
                 <button
                     onClick={() => setView('table')}
-<<<<<<< HEAD
                     className={`flex items-center gap-2 px-4 py-2 ${view === 'table'
                             ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
                             : 'text-gray-500 hover:text-gray-700'
                         }`}
-=======
-                    className={`flex items-center gap-2 px-4 py-2 ${
-                        view === 'table' 
-                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]' 
-                            : 'text-gray-500 hover:text-gray-700'
-                    }`}
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 >
                     <TableIcon className="h-4 w-4" />
                     <span className="whitespace-nowrap">Table</span>
@@ -174,11 +128,7 @@ export default function OpportunitiesPage() {
                     onClick={() => setFilter('all')}
                     className={cn(
                         "hover:bg-muted/60 transition-colors",
-<<<<<<< HEAD
                         filter === 'all'
-=======
-                        filter === 'all' 
->>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                             ? "bg-[#5D51FF]/20 text-[#5D51FF] hover:bg-[#5D51FF]/30 dark:bg-[#5D51FF]/10 dark:text-[#5D51FF] dark:hover:bg-[#5D51FF]/20"
                             : "hover:bg-muted/50"
                     )}
