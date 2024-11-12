@@ -9,6 +9,7 @@ datasource db {
 }
 
 model User {
+<<<<<<< HEAD
   id                    String         @id @default(cuid())
   createdAt             DateTime       @default(now())
   email                 String         @unique
@@ -24,6 +25,22 @@ model User {
   assignedOpportunities Opportunity[]  @relation("AssignedSA")
   notes                 Note[]
   clientPortals         ClientPortal[]
+=======
+  id               String         @id @default(cuid())
+  createdAt        DateTime       @default(now())
+  email            String         @unique
+  firstName        String?
+  lastName         String?
+  gender           String?
+  profileImageUrl  String?
+  stripeUserId     String?        @unique
+  payments         Payment[]
+  subscriptions    Subscription[]
+  invoices         Invoice[]
+  opportunities    Opportunity[]  @relation("CreatedBy")
+  assignedOpportunities Opportunity[] @relation("AssignedSA")
+  notes            Note[]
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 }
 
 model Payment {
@@ -55,6 +72,7 @@ model Subscription {
 }
 
 model SubscriptionPlan {
+<<<<<<< HEAD
   id            String         @id @default(cuid())
   createdAt     DateTime       @default(now())
   name          String
@@ -62,10 +80,20 @@ model SubscriptionPlan {
   amount        Float
   currency      String
   interval      String
+=======
+  id          String         @id @default(cuid())
+  createdAt   DateTime       @default(now())
+  name        String
+  description String
+  amount      Float
+  currency    String
+  interval    String
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
   subscriptions Subscription[]
 }
 
 model Invoice {
+<<<<<<< HEAD
   id              String       @id @default(cuid())
   createdAt       DateTime     @default(now())
   stripeInvoiceId String       @unique
@@ -81,6 +109,23 @@ model Invoice {
 
 model Opportunity {
   id                      String                 @id @default(cuid())
+=======
+  id               String       @id @default(cuid())
+  createdAt        DateTime     @default(now())
+  stripeInvoiceId  String       @unique
+  amountPaid       Float
+  amountDue        Float
+  currency         String
+  status           String
+  userId           String
+  user             User         @relation(fields: [userId], references: [id])
+  subscriptionId   String
+  subscription     Subscription @relation(fields: [subscriptionId], references: [id])
+}
+
+model Opportunity {
+  id                      String   @id @default(cuid())
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
   companyName             String
   contactName             String
   contactEmail            String
@@ -88,7 +133,11 @@ model Opportunity {
   stage                   String
   priority                String
   lastUpdated             DateTime
+<<<<<<< HEAD
   createdAt               DateTime               @default(now())
+=======
+  createdAt               DateTime @default(now())
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
   description             String?
   saRequestNotes          String?
   technologyStack         String[]
@@ -96,6 +145,7 @@ model Opportunity {
   complianceRequirements  String[]
   nextSteps               String?
   assignedSAId            String?
+<<<<<<< HEAD
   assignedSA              User?                  @relation("AssignedSA", fields: [assignedSAId], references: [id])
   createdById             String
   createdBy               User                   @relation("CreatedBy", fields: [createdById], references: [id])
@@ -105,6 +155,12 @@ model Opportunity {
 
   @@index([assignedSAId])
   @@index([createdById])
+=======
+  assignedSA              User?    @relation("AssignedSA", fields: [assignedSAId], references: [id])
+  createdById             String
+  createdBy               User     @relation("CreatedBy", fields: [createdById], references: [id])
+  notes                   Json[]
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 }
 
 model Note {
@@ -114,6 +170,7 @@ model Note {
   authorId      String
   opportunityId String
   author        User        @relation(fields: [authorId], references: [id])
+<<<<<<< HEAD
   opportunity   Opportunity @relation("OpportunityNotes", fields: [opportunityId], references: [id])
 
   @@index([authorId])
@@ -150,3 +207,10 @@ model ClientPortal {
   @@index([opportunityId])
   @@index([createdById])
 }
+=======
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id])
+
+  @@index([authorId])
+  @@index([opportunityId])
+}
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6

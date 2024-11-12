@@ -3,7 +3,13 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
+<<<<<<< HEAD
 import { prisma } from '@/lib/prisma'
+=======
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 
 // Initialize Supabase client with environment variables
 export async function POST(req: NextRequest) {

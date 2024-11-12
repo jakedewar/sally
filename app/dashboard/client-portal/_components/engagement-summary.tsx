@@ -17,6 +17,7 @@ interface EngagementStage {
   status: 'pending' | 'approved' | 'disputed'
 }
 
+<<<<<<< HEAD
 interface Opportunity {
   createdAt: string;
   description?: string;
@@ -26,6 +27,8 @@ interface EngagementSummaryProps {
   opportunity: Opportunity;
 }
 
+=======
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -35,13 +38,22 @@ function formatDate(dateString: string): string {
   });
 }
 
+<<<<<<< HEAD
 export default function EngagementSummary({ opportunity }: EngagementSummaryProps) {
+=======
+export default function EngagementSummary() {
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
   const [stages, setStages] = useState<EngagementStage[]>([
     {
       id: '1',
       name: 'Initial Discovery',
+<<<<<<< HEAD
       date: opportunity.createdAt,
       saNote: opportunity.description || "Initial discovery phase",
+=======
+      date: '2023-10-01',
+      saNote: "TechStyle Boutique is looking to improve their email marketing and customer segmentation. They're currently using a basic ESP and are interested in Klaviyo's advanced segmentation capabilities.",
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
       prospectFeedback: "",
       status: 'pending'
     },
@@ -75,14 +87,22 @@ export default function EngagementSummary({ opportunity }: EngagementSummaryProp
   }
 
   const handleSANoteSave = (stageId: string) => {
+<<<<<<< HEAD
     setStages(stages.map(stage =>
+=======
+    setStages(stages.map(stage => 
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
       stage.id === stageId ? { ...stage, saNote: editedNote } : stage
     ))
     setEditingStage(null)
   }
 
   const handleProspectFeedback = (stageId: string, feedback: string, newStatus: 'approved' | 'disputed') => {
+<<<<<<< HEAD
     setStages(stages.map(stage =>
+=======
+    setStages(stages.map(stage => 
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
       stage.id === stageId ? { ...stage, prospectFeedback: feedback, status: newStatus } : stage
     ))
   }

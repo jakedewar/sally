@@ -46,6 +46,7 @@ const formatCurrency = (value: number) => {
     }).format(value)
 }
 
+<<<<<<< HEAD
 export default function OpportunitiesKanban({
     opportunities,
     setOpportunities,
@@ -54,6 +55,16 @@ export default function OpportunitiesKanban({
     opportunities: Opportunity[],
     setOpportunities: (opportunities: Opportunity[]) => void,
     isLoading?: boolean
+=======
+export default function OpportunitiesKanban({ 
+    opportunities, 
+    setOpportunities, 
+    isLoading = false 
+}: { 
+    opportunities: Opportunity[], 
+    setOpportunities: (opportunities: Opportunity[]) => void,
+    isLoading?: boolean 
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
 }) {
     const router = useRouter()
 
@@ -88,13 +99,21 @@ export default function OpportunitiesKanban({
                         {formatCurrency(opportunity.value)}
                     </span>
                 </div>
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 {opportunity.description && (
                     <p className="text-sm text-muted-foreground line-clamp-2">
                         {opportunity.description}
                     </p>
                 )}
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mt-auto pt-2 border-t border-border">
                     <Calendar className="h-3 w-3" />
                     <span>
@@ -110,7 +129,11 @@ export default function OpportunitiesKanban({
     }
 
     return (
+<<<<<<< HEAD
         <div className="flex gap-2 sm:gap-4 overflow-x-auto h-full pb-6 w-full min-w-0">
+=======
+        <div className="flex gap-2 sm:gap-4 overflow-x-auto h-full pb-6">
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
             {stages.map((stage) => {
                 const stageOpportunities = getOpportunitiesByStage(stage)
                 const isEmpty = stageOpportunities.length === 0
@@ -118,6 +141,7 @@ export default function OpportunitiesKanban({
                 return (
                     <AnimatePresence key={stage}>
                         <motion.div
+<<<<<<< HEAD
                             initial={{ opacity: 1 }}
                             animate={{
                                 opacity: isEmpty ? 0.7 : 1,
@@ -128,17 +152,39 @@ export default function OpportunitiesKanban({
                         >
                             <div className={`p-3 sm:p-4 border-b border-border flex-shrink-0 ${isEmpty ? 'h-full flex items-center justify-center' : ''
                                 }`}>
+=======
+                            initial={{ width: "280px", opacity: 1 }}
+                            animate={{
+                                width: isEmpty ? "64px" : "min(280px, calc(100vw - 2rem))",
+                                opacity: isEmpty ? 0.7 : 1,
+                            }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className={`flex-shrink-0 ${
+                                isEmpty ? 'border-dashed' : 'border-solid'
+                            } border border-border rounded-lg bg-background flex flex-col h-full`}
+                        >
+                            <div className={`p-3 sm:p-4 border-b border-border flex-shrink-0 ${
+                                isEmpty ? 'h-full flex items-center justify-center' : ''
+                            }`}>
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 <motion.div
                                     animate={{
                                         transform: isEmpty ? "rotate(-90deg)" : "rotate(0deg)",
                                     }}
                                     transition={{ duration: 0.3 }}
+<<<<<<< HEAD
                                     className={`flex items-center justify-between gap-2 ${isEmpty ? 'origin-center whitespace-nowrap' : ''
                                         }`}
+=======
+                                    className={`flex items-center justify-between gap-2 ${
+                                        isEmpty ? 'origin-center whitespace-nowrap' : ''
+                                    }`}
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 >
                                     <span className="font-medium text-sm sm:text-base text-foreground">
                                         {stage}
                                     </span>
+<<<<<<< HEAD
                                     <Badge
                                         variant="secondary"
                                         className={`${isEmpty ? 'ml-2' : ''
@@ -146,6 +192,13 @@ export default function OpportunitiesKanban({
                                     >
                                         {stageOpportunities.length}
                                     </Badge>
+=======
+                                    <span className={`text-xs sm:text-sm text-muted-foreground ${
+                                        isEmpty ? 'ml-2' : ''
+                                    }`}>
+                                        {stageOpportunities.length}
+                                    </span>
+>>>>>>> 31066eb6d481c608ca59397cc5883e01ce9d4bc6
                                 </motion.div>
                             </div>
 
