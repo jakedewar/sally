@@ -71,6 +71,9 @@ export default function AddOpportunityModal() {
         nextSteps: '',
     })
 
+    // Add this state for tracking validation errors
+    const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setOpportunity(prev => ({ ...prev, [name]: value }))
@@ -106,6 +109,25 @@ export default function AddOpportunityModal() {
         try {
             if (!session?.user?.id) {
                 throw new Error('User not authenticated');
+            }
+
+            if (!opportunity.companyName?.trim()) {
+                throw new Error('Company name is required');
+            }
+            if (!opportunity.contactName?.trim()) {
+                throw new Error('Contact name is required');
+            }
+            if (!opportunity.contactEmail?.trim()) {
+                throw new Error('Contact email is required');
+            }
+            if (!opportunity.stage) {
+                throw new Error('Stage is required');
+            }
+            if (!opportunity.priority) {
+                throw new Error('Priority is required');
+            }
+            if (opportunity.value === undefined || opportunity.value < 0) {
+                throw new Error('Please enter a valid value');
             }
 
             const formattedOpportunity = {
@@ -154,6 +176,49 @@ export default function AddOpportunityModal() {
                 description: error instanceof Error ? error.message : "Failed to add the opportunity. Please try again.",
                 variant: "destructive",
             })
+        }
+    }
+
+    // Add a function to validate the current step
+    const validateCurrentStep = (): boolean => {
+        const errors: { [key: string]: string } = {};
+
+        if (currentStep === 0) { // Basic Information step
+            if (!opportunity.companyName?.trim()) {
+                errors.companyName = 'Company name is required';
+            }
+            if (!opportunity.contactName?.trim()) {
+                errors.contactName = 'Contact name is required';
+            }
+            if (!opportunity.contactEmail?.trim()) {
+                errors.contactEmail = 'Contact email is required';
+            }
+            if (!opportunity.stage) {
+                errors.stage = 'Stage is required';
+            }
+            if (!opportunity.priority) {
+                errors.priority = 'Priority is required';
+            }
+            if (opportunity.value === undefined || opportunity.value < 0) {
+                errors.value = 'Please enter a valid value';
+            }
+        }
+        // Add validation for other steps if needed
+
+        setValidationErrors(errors);
+        return Object.keys(errors).length === 0;
+    }
+
+    // Modify the next button click handler
+    const handleNext = () => {
+        if (validateCurrentStep()) {
+            setCurrentStep(prev => Math.min(steps.length - 1, prev + 1));
+        } else {
+            toast({
+                title: "Required Fields",
+                description: "Please fill in all required fields before proceeding.",
+                variant: "destructive",
+            });
         }
     }
 
@@ -223,7 +288,13 @@ export default function AddOpportunityModal() {
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="stage">Stage</Label>
-                            <Select onValueChange={(value) => handleSelectChange('stage', value)}>
+                            <Select
+                                onValueChange={(value) => {
+                                    handleSelectChange('stage', value);
+                                    setValidationErrors(prev => ({ ...prev, stage: '' }));
+                                }}
+                                required
+                            >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select stage" />
                                 </SelectTrigger>
@@ -239,7 +310,10 @@ export default function AddOpportunityModal() {
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="priority">Priority</Label>
-                        <Select onValueChange={(value) => handleSelectChange('priority', value)}>
+                        <Select
+                            onValueChange={(value) => handleSelectChange('priority', value)}
+                            required
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder="Select priority" />
                             </SelectTrigger>
@@ -370,11 +444,32 @@ export default function AddOpportunityModal() {
         }
     ]
 
+    const handlePrevious = () => {
+        setValidationErrors({});  // Clear any validation errors
+        setCurrentStep(prev => Math.max(0, prev - 1));
+    }
+
+    // Add this function to check if the current step is complete
+    const isCurrentStepComplete = (): boolean => {
+        if (currentStep === 0) { // Basic Information step
+            return !!(
+                opportunity.companyName?.trim() &&
+                opportunity.contactName?.trim() &&
+                opportunity.contactEmail?.trim() &&
+                opportunity.stage &&
+                opportunity.priority &&
+                (opportunity.value !== undefined && opportunity.value >= 0)
+            );
+        }
+        // Add checks for other steps if they have required fields
+        return true;
+    }
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button 
-                    variant="outline" 
+                <Button
+                    variant="outline"
                     className="bg-background hover:bg-accent text-[#5D51FF] hover:text-[#5D51FF] border-[#5D51FF]/20 hover:border-[#5D51FF]/30"
                 >
                     <PlusCircle className="mr-2 h-4 w-4" />
@@ -393,13 +488,12 @@ export default function AddOpportunityModal() {
                         {steps.map((step, index) => (
                             <div key={index} className="flex flex-col items-center">
                                 <div
-                                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                                        index < currentStep
-                                            ? 'bg-[#5D51FF] text-white dark:text-white'
-                                            : index === currentStep
-                                                ? 'bg-[#5D51FF]/10 dark:bg-[#5D51FF]/20 text-[#5D51FF] border-2 border-[#5D51FF]'
-                                                : 'bg-muted text-muted-foreground'
-                                    }`}
+                                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${index < currentStep
+                                        ? 'bg-[#5D51FF] text-white dark:text-white'
+                                        : index === currentStep
+                                            ? 'bg-[#5D51FF]/10 dark:bg-[#5D51FF]/20 text-[#5D51FF] border-2 border-[#5D51FF]'
+                                            : 'bg-muted text-muted-foreground'
+                                        }`}
                                 >
                                     {index < currentStep ? (
                                         <Check className="w-5 h-5" />
@@ -407,11 +501,10 @@ export default function AddOpportunityModal() {
                                         <span className="text-sm font-semibold">{index + 1}</span>
                                     )}
                                 </div>
-                                <span className={`text-xs mt-2 ${
-                                    index <= currentStep 
-                                        ? 'text-[#5D51FF] dark:text-[#8075FF] font-medium' 
-                                        : 'text-muted-foreground'
-                                }`}>
+                                <span className={`text-xs mt-2 ${index <= currentStep
+                                    ? 'text-[#5D51FF] dark:text-[#8075FF] font-medium'
+                                    : 'text-muted-foreground'
+                                    }`}>
                                     {step.title}
                                 </span>
                             </div>
@@ -429,7 +522,7 @@ export default function AddOpportunityModal() {
                     <div className="flex justify-between space-x-2">
                         <Button
                             type="button"
-                            onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
+                            onClick={handlePrevious}
                             disabled={currentStep === 0}
                             variant="outline"
                             className="hover:bg-[#5D51FF]/10 dark:hover:bg-[#5D51FF]/20 text-[#5D51FF] dark:text-[#8075FF] hover:text-[#5D51FF] border-[#5D51FF]/20"
@@ -440,16 +533,18 @@ export default function AddOpportunityModal() {
                         {currentStep < steps.length - 1 ? (
                             <Button
                                 type="button"
-                                onClick={() => setCurrentStep(prev => Math.min(steps.length - 1, prev + 1))}
-                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD]"
+                                onClick={handleNext}
+                                disabled={!isCurrentStepComplete()}
+                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD] disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Next
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
                         ) : (
-                            <Button 
-                                type="submit" 
-                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD]"
+                            <Button
+                                type="submit"
+                                disabled={!isCurrentStepComplete()}
+                                className="bg-[#5D51FF] dark:bg-[#8075FF] text-white hover:bg-[#4B41CC] dark:hover:bg-[#6A61DD] disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Save Opportunity
                             </Button>

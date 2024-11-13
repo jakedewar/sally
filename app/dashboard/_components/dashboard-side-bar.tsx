@@ -34,15 +34,6 @@ export default function DashboardSideBar() {
           </Link>
           <Link
             className={cn("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-[#A6A6A6] dark:hover:text-[#F9F9FF]", {
-              "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF] dark:bg-[#1A1A1A] dark:text-[#5D51FF] dark:hover:text-[#5D51FF]": pathname === "/dashboard/integration-checklist"
-            })}
-            href="/dashboard/integration-checklist"
-          >
-            <ListCheck className="h-4 w-4" />
-            Integration Checklist
-          </Link>
-          <Link
-            className={cn("flex items-center gap-2 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-[#A6A6A6] dark:hover:text-[#F9F9FF]", {
               "bg-[#F0EEFF] text-[#5D51FF] hover:text-[#5D51FF] dark:bg-[#1A1A1A] dark:text-[#5D51FF] dark:hover:text-[#5D51FF]": pathname.startsWith("/dashboard/opportunities")
             })}
             href="/dashboard/opportunities"

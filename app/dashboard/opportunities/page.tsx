@@ -103,8 +103,8 @@ export default function OpportunitiesPage() {
                 <button
                     onClick={() => setView('kanban')}
                     className={`flex items-center gap-2 px-4 py-2 ${view === 'kanban'
-                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                            : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                        : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     <LayoutGridIcon className="h-4 w-4" />
@@ -113,8 +113,8 @@ export default function OpportunitiesPage() {
                 <button
                     onClick={() => setView('table')}
                     className={`flex items-center gap-2 px-4 py-2 ${view === 'table'
-                            ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
-                            : 'text-gray-500 hover:text-gray-700'
+                        ? 'text-[#5D51FF] border-b-2 border-[#5D51FF]'
+                        : 'text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     <TableIcon className="h-4 w-4" />

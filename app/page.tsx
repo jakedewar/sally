@@ -67,9 +67,9 @@ export default function Home() {
   const { currentWord, isAnimating } = useRotatingText([
     'Sales',
     'Success',
-    'Strategy',
     'Solutions',
-    'Synergy'
+    'Strategy',
+    'Scale'
   ], 2500);
 
   return (
@@ -86,22 +86,21 @@ export default function Home() {
                   <span className="text-[#5D51FF]">
                     Sally
                   </span> - Your{' '}
-                  <span 
-                    className={`text-[#5D51FF] inline-block transition-all duration-500 ${
-                      isAnimating ? 'opacity-0 transform -translate-y-4' : 'opacity-100 transform translate-y-0'
-                    }`}
+                  <span
+                    className={`text-[#5D51FF] inline-block transition-all duration-500 ${isAnimating ? 'opacity-0 transform -translate-y-4' : 'opacity-100 transform translate-y-0'
+                      }`}
                   >
                     {currentWord}
                   </span>{' '}
-                    Ally
+                  Ally
                 </h1>
                 <p className="mx-auto max-w-[700px] text-xl text-[#F9F9FF] md:text-2xl/relaxed lg:text-3xl/relaxed">
-                  Drive inter-dimensional revenue with Sally-powered Klaviyo
+                  Transform your technical sales process with AI-powered client portals
                 </p>
                 <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                   <Link href="/sign-up">
                     <Button size="lg" className="bg-[#5D51FF] hover:bg-[#4B41CC] text-white font-semibold py-3 px-8 rounded-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-[0_0_15px_rgba(93,81,255,0.5)]">
-                      Warp-Speed Your Productivity
+                      Summon Sally
                     </Button>
                   </Link>
                   <Link href="/features">
@@ -122,12 +121,24 @@ export default function Home() {
           <section id="features" className="w-full py-20 bg-transparent relative">
             <div className="absolute inset-0 bg-gradient-radial from-[#1A1A1A] to-transparent opacity-30"></div>
             <div className="container mx-auto px-4 relative">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-center mb-16 text-[#F9F9FF]">Amplify Your Klaviyo Expertise Across Dimensions</h2>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-center mb-16 text-[#F9F9FF]">Your Gateway to Seamless Solution Architecture</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 {[
-                  { title: "Quantum Integration Checklist", description: "Navigate complex Klaviyo setups with our AI-powered, multi-dimensional checklist.", icon: CheckSquare },
-                  { title: "Galactic Deal Analytics", description: "Harness the power of cosmic machine learning to forecast outcomes and optimize your sales strategies.", icon: BarChart2 },
-                  { title: "Nebula Integration Architect", description: "Craft bespoke Klaviyo solutions with our sentient integration assistant from the far reaches of space.", icon: Code }
+                  {
+                    title: "Client Portal Hub",
+                    description: "Create personalized spaces for each client, centralizing all technical discussions, requirements, and solutions in one secure location.",
+                    icon: CheckSquare
+                  },
+                  {
+                    title: "Deal Intelligence",
+                    description: "Track engagement, analyze patterns, and receive AI-powered insights to optimize your technical sales approach.",
+                    icon: BarChart2
+                  },
+                  {
+                    title: "Solution Architect",
+                    description: "Let AI help craft and document technical solutions while maintaining your unique expertise and approach.",
+                    icon: Code
+                  }
                 ].map((feature, index) => (
                   <div key={index} className="flex flex-col items-center text-center space-y-4 group">
                     <div className="bg-[#1A1A1A] backdrop-blur-sm p-4 rounded-lg transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(93,81,255,0.3)] group-hover:bg-opacity-80">
@@ -141,19 +152,25 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Product Showcase Section */}
+          {/* Portal Showcase Section */}
           <section className="w-full py-20 bg-transparent">
             <div className="container mx-auto px-4">
               <div className="flex flex-col lg:flex-row items-center justify-between space-y-12 lg:space-y-0 lg:space-x-20">
                 <div className="lg:w-1/2 space-y-8">
                   <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-[#F9F9FF]">
-                    Engineered for Klaviyo Solution Architects
+                    Client Portals That Transform Deals
                   </h2>
                   <p className="text-xl text-[#A6A6A6]">
-                    Sally harnesses the power of AI to elevate your Klaviyo expertise, simplify complex integrations, and accelerate your deal closures.
+                    Create dedicated spaces for each opportunity, where technical discovery, solution design, and client collaboration come together seamlessly.
                   </p>
                   <ul className="space-y-4">
-                    {["AI-driven Klaviyo deal forecasting", "Intelligent e-commerce integration planning", "Automated client engagement", "Predictive performance analytics"].map((feature, index) => (
+                    {[
+                      "Personalized client workspaces",
+                      "Real-time collaboration tools",
+                      "Automated documentation",
+                      "Secure file sharing",
+                      "Integration capabilities"
+                    ].map((feature, index) => (
                       <li key={index} className="flex items-center space-x-3">
                         <svg className="h-6 w-6 text-[#5D51FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -186,7 +203,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-[url('/constellation-bg.png')] opacity-5"></div>
             <div className="container mx-auto px-4 relative z-10">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-center mb-16 text-[#F9F9FF]">
-                Intergalactic SA Testimonials
+                Solution Expert Testimonials
               </h2>
               <div className="relative">
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -198,7 +215,7 @@ export default function Home() {
                   </svg>
                   <blockquote className="relative">
                     <p className="text-lg md:text-xl text-[#F9F9FF] font-medium mb-8">
-                      "Sally is the cosmic Swiss Army knife for <i>most</i> SA black holes. It warped my 'someday' list into 'done light-years ago'. Now I'm <i>almost</i> as stellar as Luke! If you're not using Sally, you're probably lost in deep space. Welcome to the future, fellow SAs!"
+                      "Sally's client portals have revolutionized how we handle technical sales. Our discovery process is streamlined, solutions are documented automatically, and clients love having their own dedicated space. It's transformed our entire approach to solution architecture!"
                     </p>
                     <footer className="flex items-center space-x-4">
                       <div className="flex-shrink-0">
@@ -208,7 +225,7 @@ export default function Home() {
                       </div>
                       <div>
                         <div className="text-base font-semibold text-[#F9F9FF]">Jake Dewar</div>
-                        <div className="text-sm text-[#A6A6A6]">Klaviyo Solution Architect & Sally Evangelist</div>
+                        <div className="text-sm text-[#A6A6A6]">Solution Architect & Sally Evangelist</div>
                       </div>
                     </footer>
                   </blockquote>
@@ -223,10 +240,10 @@ export default function Home() {
             <div className="container mx-auto px-4 relative z-10">
               <div className="flex flex-col items-center space-y-8 text-center">
                 <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-[#F9F9FF]">
-                  Ready to Elevate Your Klaviyo SA Experience?
+                  Ready to Transform Your Technical Sales Process?
                 </h2>
                 <p className="mx-auto max-w-[600px] text-xl text-[#A6A6A6]">
-                  Join the ranks of elite Klaviyo Solution Architects harnessing Sally's cosmic powers to revolutionize their workflow and client success.
+                  Join forward-thinking Solution Architects and Sales Engineers using Sally's client portals to streamline technical sales and drive success.
                 </p>
                 <Button
                   size="lg"
